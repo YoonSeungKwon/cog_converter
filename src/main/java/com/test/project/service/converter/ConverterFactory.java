@@ -1,12 +1,18 @@
 package com.test.project.service.converter;
 
 import com.test.project.common.enums.FileFormat;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class ConverterFactory {
 
-    public static FileConverter makeConverter(FileFormat before, FileFormat after){
-        if(before == FileFormat.TIF && after == FileFormat.COG){
-            return new Tif2CogConverter();
+    private final COGConverter cogConverter;
+
+    public ImageConverter makeConverter(FileFormat from, FileFormat to){
+        if((from == FileFormat.TIF || from == FileFormat.TIFF) && to == FileFormat.COG){
+            return cogConverter;
         }else{
             throw new RuntimeException();
         }

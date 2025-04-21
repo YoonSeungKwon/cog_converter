@@ -4,15 +4,15 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.test.project.service.domain.ConvertibleImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class S3StorageManager implements StorageManager{
+public class S3StorageManager extends GdalImageLoader implements StorageManager{
 
     private final AmazonS3Client amazonS3Client;
 
@@ -21,9 +21,6 @@ public class S3StorageManager implements StorageManager{
 
     @Value("${bucket_name2}")
     private String bucket2;
-
-    @Value("${region}")
-    private String region;
 
 
     public ListObjectsV2Result loadFiles(){
@@ -45,4 +42,10 @@ public class S3StorageManager implements StorageManager{
 
         return result;
     }
+
+    public ConvertibleImage loadFile(String key){
+        return super.load(key);
+    }
+
+
 }
