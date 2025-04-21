@@ -5,13 +5,16 @@ import lombok.Getter;
 @Getter
 public enum FileFormat {
 
-    TIF(1),
-    COG(2),
+    TIF("TIF", "tif"),
+    TIFF("TIFF", "tiff"),
+    COG("COG", "tiff"),
     ;
 
-    private final int key;
+    private final String key;
+    private final String format;
 
-    FileFormat(int key){
+    FileFormat(String key, String format){
         this.key = key;
+        this.format = format;
     }
 }
