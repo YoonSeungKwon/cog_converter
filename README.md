@@ -1,104 +1,153 @@
-1. 개발 환경
-<hr/>
-Java 17.0
-SpringBoot 3.4
--JPA/Hibernate
-H2 2.3
-GDAL 3.10.0
+# 🛰️ GDAL Image Converter API
 
-2. API 서비스 구성
-<hr/>
-도메인
+Java와 GDAL을 이용하여 이미지 데이터를 변환하고, 변환된 메타데이터를 조회할 수 있는 API 서비스입니다.
 
-ConvertibleImage<interface> - 변환되는 이미지의 정보를 저장하는 객체
+<br/>
 
-GdalConvertibleImage<class> GDAL 라이브러리를 통하여 변환을 수행하는 도메인 객체 내부적으로 Dataset을 저장하며 캡슐화를 통하여 메타데이터 반환
- 
-서비스
+## 1. 개발 환경
+---
+- **Java 17.0**  
+- **Spring Boot 3.4**  
+- **JPA / Hibernate**  
+- **H2 Database 2.3**  
+- **GDAL 3.10.0**
 
-<storage>
-StorageManager<interface>	이미지 저장 및 삭제를 정의하는 인터페이스
-  
-S3StorageManager<class>	S3기반으로 이미지 저장 및 삭제를 구현한 클래스
+<br/>
 
-GdalImageLoader<abstract class> GDAL라이브러리를 이용하여 이미지를 로딩하는 공통 함수를 상속시키는 추상 클래스
+## 2. API 서비스 구성
+---
 
-<convert>
+### A. 도메인
 
-ConverterFactory<class>	Filformat을 통하여 적절한 Converter를 생성하는 객체
+| Entity | Info |
+|--------|------|
+| `ConvertibleImage` `<interface>` | 서비스내에서 변환 전/후의 이미지를 정의하는 인터페이스 |
+| `GdalConvertibleImage` `<class>` | GDAL 라이브러리를 통해 변환을 수행하는 ConvertibleImage 구현체. 내부적으로 Dataset을 저장 |
 
-ImageConverter<interface>	이미지 변환을 정의하는 인터페이스
+---
 
-CogConverter<class>		어댑터 패턴으로 COG파일로 변환을 구현한 클래스
+### B. 서비스
 
-GdalCogConverter<class>	GDAL을 이용하여 실제 파일 변환을 구현한 클래스
+#### Storage
 
-<application>
+| Entity | Info |
+|--------|------|
+| `StorageManager` `<interface>` | 이미지 저장 및 삭제를 정의하는 인터페이스 |
+| `S3StorageManager` `<class>` | S3 기반으로 이미지 저장 및 삭제를 구현한 클래스 |
+| `GdalImageLoader` `<abstract class>` | GDAL을 이용하여 이미지를 로딩하는 공통 함수를 제공하는 추상 클래스 |
 
-ConvertService<class>	변환기능의 흐름을 담당하는 서비스 객체 
+#### Convert
 
-DataService<class>		데이터 검색 기능의 흐름을 담당하는 서비스 객체
-	
+| Entity | Info |
+|--------|------|
+| `ConverterFactory` `<class>` | 파일 포맷을 기반으로 적절한 Converter를 생성하는 팩토리 클래스 |
+| `ImageConverter` `<interface>` | 이미지 변환을 정의하는 인터페이스 |
+| `CogConverter` `<class>` | 어댑터 역할로 라이브러리를 이용하여 COG 파일로의 변환을 연결 |
+| `GdalCogConverter` `<class>` | GDAL을 이용하여 실제 파일 변환을 수행하는 클래스 |
 
-인프라
+#### Application
 
-CogImageData<class>	데이터베이스에 저장되는 메타데이터를 가지고 있는 영속성 객체
+| Entity | Info |
+|--------|------|
+| `ConvertService` `<class>` | 이미지 변환 기능의 흐름을 담당하는 서비스 레이어 객체 |
+| `DataService` `<class>` | 데이터 검색 기능의 흐름을 담당하는 서비스 레이어 객체 |
 
-CogJpaRepository<interface>	JPA를 이용하여 데이터베이스에 저장하는 객체
+<br/>
 
-CogDataRepositoryImpl<class>	어댑터 패턴으로 서비스 레이어의 리포지토리를 구현한 객체
+## 3. API 명세
+---
+### ConvertController
 
+#### 1. GET `/api/v1/converts/list` 
+**변환 가능한 모든 파일을 버킷에서 로드**
 
-3. API 명세
-<hr/>
+**Response**
+```json
+[
+  {
+    "filename": "string",
+    "size": "long",
+    "lastModified": "date"
+  }
+]
+```
 
-<convert>
+#### 2. POST `/api/v1/converts/tif-cog` 
+**tif/tiff파일을 COG로 변환**
 
-GET(“/api/v1/converts/list”)	
-response
-{List{filename:(String), size:(long), lastModified:(Date)}}
+**Request**
+```json
+{
+  "key": "string (필수)",
+  "compressType": "string (선택 default=LZW)",
+  "blockSize": "int (선택 default=512)"
+}
+```
 
-POST(“/api/v1/converts/tif-cog”)
-request 
-{key:(String 필수), compressType(String default=LZW), blockSize(int default=512)}
-response
-{fileName:(String), width:(int), height:(int), bandCount:(int), blockSize:(int), compressType:(String), createdAt:(String)}
+**Response**
+```json
+{
+  "fileName": "string",
+  "width": "int",
+  "height": "int",
+  "bandCount": "int",
+  "blockSize": "int",
+  "compressType": "string",
+  "createdAt": "string"
+}
+```
 
-POST(“/api/v1/converts/tif-cog/all”)
-request
-{key:(String[] 필수), compressType(String default=NONE), blockSize(int default=512)}
-response
-{List{fileName:(String), width:(int), height:(int), bandCount:(int), blockSize:(int), compressType:(String), createdAt:(String)}}
-<data>
+#### 3. POST `/api/v1/converts/tif-cog/all` 
+**tif/tiff파일들을 COG로 변환**
 
-GET(“/api/v1/data?width=(int)”)
-response
-{List{fileName:(String), width:(int), height:(int), bandCount:(int), blockSize:(int), compressType:(String), createdAt:(String)}}
+**Request**
+```json
+{
+  "key": ["string", ...] (필수),
+  "compressType": "string (선택 default=NONE)",
+  "blockSize": "int (선택 default=512)"
+}
+```
 
-GET(“/api/v1/data?height=(int)”)
-response
-{List{fileName:(String), width:(int), height:(int), bandCount:(int), blockSize:(int), compressType:(String), createdAt:(String)}}
+**Response**
+```json
+[
+  {
+    "fileName": "string",
+    "width": "int",
+    "height": "int",
+    "bandCount": "int",
+    "blockSize": "int",
+    "compressType": "string",
+    "createdAt": "string"
+  }
+]
+```
 
-GET(“/api/v1/data?width=(int)&height=(int)”)
-response
-{List{fileName:(String), width:(int), height:(int), bandCount:(int), blockSize:(int), compressType:(String), createdAt:(String)}}
+---
 
-GET(“/api/v1/data?bandCount=(int)”)
-response
-{List{fileName:(String), width:(int), height:(int), bandCount:(int), blockSize:(int), compressType:(String), createdAt:(String)}}
+### DataController
 
-GET(“/api/v1/data?compressType=(String)”)
-response
-{List{fileName:(String), width:(int), height:(int), bandCount:(int), blockSize:(int), compressType:(String), createdAt:(String)}}
+#### 1. GET `/api/v1/data`
+**쿼리 파라미터 기반 메타데이터 검색**
 
-GET(“/api/v1/data”)
-response
-{List{fileName:(String), width:(int), height:(int), bandCount:(int), blockSize:(int), compressType:(String), createdAt:(String)}}
+- `?width=(int)`
+- `?height=(int)`
+- `?width=(int)&height=(int)`
+- `?bandCount=(int)`
+- `?compressType=(string)`
+- 최신순 조회: `GET /api/v1/data`
 
-
-인프라 구성
-<hr/>
-
-사용 방법
-<hr/>
-
+**Response**
+```json
+[
+  {
+    "fileName": "string",
+    "width": "int",
+    "height": "int",
+    "bandCount": "int",
+    "blockSize": "int",
+    "compressType": "string",
+    "createdAt": "string"
+  }
+]
