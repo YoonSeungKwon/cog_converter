@@ -163,7 +163,7 @@ Java/Spring을 이용하여 이미지를 변환하고, 변환된 메타데이터
 
 ### 배포 시 구조
 
-![배포 구조](./path-to-your-image.png)
+![배포 구조](https://github.com/YoonSeungKwon/sia_test/blob/master/arch.drawio.png)
 
 ---
 
