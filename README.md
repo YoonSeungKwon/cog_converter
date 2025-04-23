@@ -11,10 +11,17 @@ Java와 GDAL을 이용하여 이미지를 변환하고, 변환된 메타데이�
 - **JPA / Hibernate**  
 - **H2 Database 2.3**  
 - **GDAL 3.10.0**
+<br/>
+
+## 2. 테스트 환경
+---
+- **OS Window 11 64bit**
+- **RAM 8GB**
+- **CPU 12th Gen Intel(R) Core(TM) i7-1260P   2.10 GHz**
 
 <br/>
 
-## 2. API 서비스 구성
+## 3. API 서비스 구성
 ---
 
 ### A. 도메인
@@ -54,7 +61,7 @@ Java와 GDAL을 이용하여 이미지를 변환하고, 변환된 메타데이�
 
 <br/>
 
-## 3. API 명세
+## 4. API 명세
 ---
 ### ConvertController
 
@@ -151,3 +158,11 @@ Java와 GDAL을 이용하여 이미지를 변환하고, 변환된 메타데이�
     "createdAt": "string"
   }
 ]
+```
+## 5. 아키텍쳐
+
+
+
+## 6. 사용 방법
+
+## 7. 다운로드
