@@ -17,4 +17,13 @@ public enum FileFormat {
         this.key = key;
         this.format = format;
     }
+
+    public static FileFormat fromKey(String key) {
+        for (FileFormat format : values()) {
+            if (format.getKey().equalsIgnoreCase(key)) {
+                return format;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
 }
