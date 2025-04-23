@@ -28,8 +28,8 @@ public class S3StorageManager extends GdalImageLoader implements StorageManager{
     @Value("${bucket_name2}")
     private String upLoadPath;
 
-    @Value("${username}")
-    private String username;
+    @Value("${folder_path}")
+    private String folderPath;
 
     @Override
     public List<TifDataResponse> load(){
@@ -73,7 +73,7 @@ public class S3StorageManager extends GdalImageLoader implements StorageManager{
     @Override
     public void delete(String fileName) {
         try {
-            amazonS3Client.deleteObject(new DeleteObjectRequest(upLoadPath, fileName));
+            amazonS3Client.deleteObject(new DeleteObjectRequest(upLoadPath, folderPath+fileName));
         } catch (Exception e) {
             throw new StorageException(fileName + "삭제 실패 : " + e.getMessage());
         }

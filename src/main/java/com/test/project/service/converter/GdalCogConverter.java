@@ -56,8 +56,12 @@ public class GdalCogConverter {
             translateOptions.add("-co");
             translateOptions.add("BLOCKSIZE=" + blockSize);
 
+
             Dataset dataset = gdal.Translate(temp, gdalConvertibleImage.dataset, new TranslateOptions(translateOptions));
 
+
+            if(dataset == null)
+                throw new ConvertException("COG 변환 과정중 오류 발생 지원하지 않는 CODEC or BlockSize");
 
             ConvertibleImage converted = new GdalConvertibleImage(dataset);
             converted.setName(convertibleImage.getName() + "-to-cog-" + seq + "." + format.getFormat());
