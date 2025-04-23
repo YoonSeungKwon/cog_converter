@@ -103,8 +103,8 @@ Java와 GDAL을 이용하여 이미지 데이터를 변환하고, 변환된 메�
 **Request**
 ```json
 {
-  "key": ["string", ...] (필수),
-  "compressType": "string (선택 default=NONE)",
+  "key": "[string, ...] (필수)",
+  "compressType": "string (선택 default=LZW)",
   "blockSize": "int (선택 default=512)"
 }
 ```
