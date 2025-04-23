@@ -165,7 +165,6 @@ Java/Spring을 이용하여 이미지를 변환하고, 변환된 메타데이터
 
 ![배포 구조](https://github.com/YoonSeungKwon/sia_test/blob/master/arch.drawio.png)
 
----
 
 ### 자동화 아이디어
 
@@ -186,7 +185,6 @@ Java/Spring을 이용하여 이미지를 변환하고, 변환된 메타데이터
 ```
 set "GDAL_DATA=%CD%\libs\gdal-data" && set "PROJ_LIB=%CD%\libs\proj9\share" && set "PATH=%CD%\libs;%PATH%" && java -jar project-0.0.1-SNAPSHOT.jar
 ```
-
 **Mac/Linux (untested)**
 ```
 export GDAL_DATA="$(pwd)/libs/gdal-data" && \
@@ -198,6 +196,13 @@ java -jar project-0.0.1-SNAPSHOT.jar
 > 위 명령어는 터미널 세션에 환경변수(`PATH`, `GDAL_DATA`, `PROJ_LIB`)를 설정하고, JAR 파일을 실행합니다.
 
 ---
+### H2 테스트 환경
 
+- console-url = "/h2-console"
+- jdbc-url = "jdbc:h2:mem:data"
+- username = root
+- password x
+
+---
 ## 7. 다운로드
 [project.zip(104.MB)](https://drive.google.com/file/d/14RBHymJv0R50f0ox50lWxqYntDunHBX3/view?usp=sharing)
