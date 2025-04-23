@@ -1,6 +1,6 @@
-# COG Image Converter API
+# Image Converter API
 
-Java와 GDAL을 이용하여 이미지를 변환하고, 변환된 메타데이터를 조회할 수 있는 API 서비스입니다.
+Java/Spring을 이용하여 이미지를 변환하고, 변환된 메타데이터를 조회할 수 있는 API 서비스입니다.
 
 <br/>
 
@@ -17,7 +17,7 @@ Java와 GDAL을 이용하여 이미지를 변환하고, 변환된 메타데이�
 ---
 - **OS Window 11 64bit**
 - **RAM 8GB**
-- **CPU 12th Gen Intel(R) Core(TM) i7-1260P   2.10 GHz**
+- **CPU 12th Gen Intel(R) Core(TM) i7-1260P**
 
 <br/>
 
@@ -161,17 +161,43 @@ Java와 GDAL을 이용하여 이미지를 변환하고, 변환된 메타데이�
 ```
 ## 5. 인프라 구조
 
-**배포시 구조**
+### 배포 시 구조
 
-[이미지]
-		
-**자동화 아이디어**
+![배포 구조](./path-to-your-image.png)
+
+---
+
+### 자동화 아이디어
 
 ##### 업로드 시 자동화를 한다면 S3에서 지원하는 메시징 방식을 스프링부트에 연동하여 사용할 것 같지만, 그 외로는 스케줄 스레드를 이용해서 주기적으로 버킷을 확인하여 변환시키거나 while 문을 이용한 스핀 방식으로 버킷을 지속적으로 확인하는 방법을 생각했습니다.
 
+---
 
 ## 6. 사용 방법
 
+### 실행
+1. 배포된 압축 파일을 해제합니다.
+2. 프롬프트에서 압축 해제 후 생성된 폴더로 이동합니다.
+3. 해당 디렉터리 내 `README.txt` 또는 아래 명령어를 복사하여 프롬프트에서 실행합니다.
 
+### 명령어 설명
+
+**Windows (권장)**
+```
+set "GDAL_DATA=%CD%\libs\gdal-data" && set "PROJ_LIB=%CD%\libs\proj9\share" && set "PATH=%CD%\libs;%PATH%" && java -jar project-0.0.1-SNAPSHOT.jar
+```
+
+**Mac/Linux (untested)**
+```
+export GDAL_DATA="$(pwd)/libs/gdal-data" && \
+export PROJ_LIB="$(pwd)/libs/proj9/share" && \
+export PATH="$(pwd)/libs:$PATH" && \
+java -jar project-0.0.1-SNAPSHOT.jar
+```
+
+> 위 명령어는 터미널 세션에 환경변수(`PATH`, `GDAL_DATA`, `PROJ_LIB`)를 설정하고, JAR 파일을 실행합니다.
+
+---
 
 ## 7. 다운로드
+[project.zip(104.MB)](https://drive.google.com/file/d/14RBHymJv0R50f0ox50lWxqYntDunHBX3/view?usp=sharing)
