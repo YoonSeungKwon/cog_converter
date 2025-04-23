@@ -2,8 +2,17 @@ package com.test.project.service.storage;
 
 import com.test.project.service.domain.ConvertibleImage;
 
-public interface StorageManager {
-    Object loadFiles();
+import java.util.List;
 
-    ConvertibleImage loadFile(String key);
+public interface StorageManager {
+
+    Object load();
+
+    ConvertibleImage load(String key);
+
+    void upload(ConvertibleImage convertibleImage);
+
+    void upload(List<ConvertibleImage> list);
+
+    void delete(String filename);
 }
