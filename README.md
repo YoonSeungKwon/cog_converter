@@ -1,6 +1,6 @@
-# 🛰️ GDAL Image Converter API
+# COG Image Converter API
 
-Java와 GDAL을 이용하여 이미지 데이터를 변환하고, 변환된 메타데이터를 조회할 수 있는 API 서비스입니다.
+Java와 GDAL을 이용하여 이미지를 변환하고, 변환된 메타데이터를 조회할 수 있는 API 서비스입니다.
 
 <br/>
 
