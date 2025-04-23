@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ConverterFactory {
 
-    private final COGConverter cogConverter;
+    private final CogConverter cogConverter;
 
     public ImageConverter makeConverter(FileFormat from, FileFormat to){
         if((from == FileFormat.TIF || from == FileFormat.TIFF) && to == FileFormat.COG){

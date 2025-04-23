@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class COGConverter implements ImageConverter {
+public class CogConverter implements ImageConverter {
 
-    private final GdalConverter gdalConverter;
+    private final GdalCogConverter gdalCogConverter;
 
     @Override
     public ConvertibleImage convert(ConvertibleImage convertible) {
-        return gdalConverter.convert(convertible, FileFormat.COG);
+        return gdalCogConverter.convert(convertible, FileFormat.COG, convertible.getCompressType(), convertible.getBlockSize());
     }
 
 }
