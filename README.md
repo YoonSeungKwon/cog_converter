@@ -10,7 +10,7 @@ Java/Spring을 이용하여 이미지를 변환하고, 변환된 메타데이터
 - **Spring Boot 3.4**  
 - **JPA / Hibernate**  
 - **H2 Database 2.3**  
-- **GDAL 3.10.0** *(인프라 추가 없이 Spring 프로젝트 내에서 COG변환을 처리하기 위하여 사용)*
+- **GDAL 3.10.0** 
 <br/>
 
 ## 2. 테스트 환경
@@ -159,20 +159,8 @@ Java/Spring을 이용하여 이미지를 변환하고, 변환된 메타데이터
   }
 ]
 ```
-## 5. 인프라 구조
 
-### 배포 시 구조
-
-![배포 구조](https://github.com/YoonSeungKwon/sia_test/blob/master/arch.drawio.png)
-
-
-### 자동화 아이디어
-
-##### 업로드 시 자동화를 한다면 S3에서 지원하는 메시징 방식을 스프링부트에 연동하여 사용할 것 같지만, 그 외로는 스케줄 스레드를 이용해서 주기적으로 버킷을 확인하여 변환시키거나 while 문을 이용한 스핀 방식으로 버킷을 지속적으로 확인하는 방법을 생각했습니다.
-
----
-
-## 6. 사용 방법
+## 5. 사용 방법
 
 ### 실행
 1. 배포된 압축 파일을 해제합니다.
@@ -195,14 +183,4 @@ java -jar project-0.0.1-SNAPSHOT.jar
 
 > 위 명령어는 터미널 세션에 환경변수(`PATH`, `GDAL_DATA`, `PROJ_LIB`)를 설정하고, JAR 파일을 실행합니다.
 
----
-### H2 테스트 환경
 
-- console-url = "/h2-console"
-- jdbc-url = "jdbc:h2:mem:data"
-- username = root
-- password x
-
----
-## 7. 다운로드
-[project.zip(104.MB)](https://drive.google.com/file/d/14RBHymJv0R50f0ox50lWxqYntDunHBX3/view?usp=sharing)
